@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
 
 export default class Event extends Component {
-  state = { eventLog: []}
+  state = {eventName: '', expenses: []};
+
   render() {
     return (
       <div>
-        Event Page
+        {this.state.eventName}
       </div>
     )
   }

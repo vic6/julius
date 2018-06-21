@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Form } from 'semantic-ui-react';
+import { Link } from 'react-router-dom'
 import './EventForm.css';
 
 export default class EventForm extends Component {
@@ -53,7 +54,7 @@ export default class EventForm extends Component {
         <Form.Input placeholder="Persons name" type="text" />
         {this.renderForms()}
         <Button onClick={this.addParticipant}>Add person</Button>
-        <Form.Button>Create Event</Form.Button>
+        <Link to='/event'><Form.Button>Create Event</Form.Button></Link>
       </Form>
     );
   }

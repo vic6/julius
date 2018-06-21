@@ -1,21 +1,23 @@
 import React, { Component } from 'react';
-import Home from './components/Home'
 import { BrowserRouter as Router, Redirect, Route } from 'react-router-dom';
-import  Navbar from './components/Navbar';
+import Home from './components/Home';
+import Navbar from './components/Navbar';
+import Event from './components/Event';
 
 class App extends Component {
 
-  handleChange = event => {
-    const {name, value} = event.target
-    this.setState({[name]: value });
-    console.log(this.state.thing)
-  };
+
 
   render() {
     return (
       <div>
-        <Navbar />
-        <Home />
+        <Router>
+          <div>
+            <Navbar />
+            <Route exact path="/" render={() => <Home />} />
+            <Route exact path="/event" render={() => <Event />} />
+          </div>
+        </Router>
       </div>
     );
   }
@@ -34,7 +36,5 @@ class App extends Component {
 //
 // const bob = new App('bob')
 // console.log(bob);
-
-
 
 export default App;
