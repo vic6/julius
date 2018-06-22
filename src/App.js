@@ -7,10 +7,14 @@ import Event from './components/Event';
 import Expense from './components/Expense';
 
 class App extends Component {
-  state = { eventName: '', participants: [{ name: '' }, { name: '' }] };
+  state = { eventName: '', participants: [{ name: '' }, { name: '' }], expenses: [] };
 
   addParticipant = () => {
     this.setState(prevState => ({ participants: [...prevState.participants, { name: '' }] }));
+  };
+
+  handleAddExpense = expense => {
+    this.setState(prevState => ({ expenses: [...prevState.expenses, expense] }));
   };
 
   removeParticipant = formKey => {
@@ -26,7 +30,7 @@ class App extends Component {
   };
 
   submitEvent = () => {
-    console.log('SUBmit', this.state)
+    console.log('SUBmit', this.state);
     localStorage.setItem('eventName', this.state.eventName);
     localStorage.setItem('participants', JSON.stringify(this.state.participants));
   };
@@ -55,11 +59,11 @@ class App extends Component {
         </Form.Group>
       </div>
     ));
-    console.log(this.state.participants);
     return userForms;
   };
 
   render() {
+    console.log(this.state.expenses)
     return (
       <div>
         <Router>
@@ -92,7 +96,10 @@ class App extends Component {
                 />
               )}
             />
-            <Route path="/expense/create" render={props => <Expense {...props} />} />
+            <Route
+              path="/expense/create"
+              render={props => <Expense handleAddExpense={this.handleAddExpense} {...props} />}
+            />
           </div>
         </Router>
       </div>

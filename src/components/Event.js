@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
 import { Button, Grid, Header } from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
+import { Link, Route } from 'react-router-dom';
 import ExpenseForm from './ExpenseForm';
 
 export default class Event extends Component {
   state = { expenses: [], eventLog: {} };
+
+  handleAddExpense = (expense) => {
+    this.setState((prevState) => ({expenses: [...prevState.expenses, expense]}))
+    localStorage.set('expenses', JSON.stringify(this.state.expenses))
+  }
 
   render() {
     console.log(this.props);
