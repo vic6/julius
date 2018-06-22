@@ -42,8 +42,6 @@ export default class ExpenseForm extends Component {
 // }
 
   handleChange = event => {
-    console.log('EVENt', event);
-    console.log(this.state);
     const { name, value } = event.target;
     this.setState({
       [name]: value
@@ -53,8 +51,6 @@ export default class ExpenseForm extends Component {
   handleSelectChange = event => {
     const participants = JSON.parse(localStorage.getItem('participants'));
     const payer = participants.filter(participant => participant.name === event.target.innerText)[0]
-    console.log(event.target.innerText);
-    console.log(payer)
     this.setState({ payer });
   };
 
@@ -85,7 +81,6 @@ export default class ExpenseForm extends Component {
     const { expenseName, amount } = this.state;
     const participants = JSON.parse(localStorage.getItem('participants'));
     const options = participants.map(person => ({ text: person.name, value: person.name }));
-    console.log(this.state.consumers);
     // onSubmit={()=>this.props.handleAddItem(this.state)}
     return (
       <Form onChange={this.handleChange} onSubmit={() => this.props.handleAddExpense(this.state)}>
@@ -95,6 +90,7 @@ export default class ExpenseForm extends Component {
           type="text"
           placeholder="flashlight"
           value={expenseName}
+          // value='Ice cream'
         />
         <Form.Field
           onChange={this.handleSelectChange}
@@ -103,7 +99,11 @@ export default class ExpenseForm extends Component {
           label="Who Paid"
           options={options}
         />
-        <Form.Input label="Amount" name="amount" type="number" value={amount} />
+        <Form.Input label="Amount" name="amount" type="number"
+          value={amount}
+          // value='34'
+
+        />
         <Form.Field name="consumers" label="Split Between" />
         {this.renderCheckboxes()}
         <Button>Enter Item</Button>

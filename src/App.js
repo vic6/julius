@@ -36,16 +36,42 @@ class App extends Component {
     const newExpense = expense
     const split = expense.consumers.length;
     const participants = JSON.parse(localStorage.getItem('participants'));
-    console.log('ParTicpants', participants)
+    const {payer} = expense;
     const people = expense.consumers.map((consumer) => {
-      if (consumer in expense.payer.profile) {
-        newExpense.payer.profile[consumer] += expense.amount / split
-      } else if (consumer !== expense.payer.name){
-        newExpense.payer.profile[consumer] = 0 + expense.amount / split;
-        // participants[consumer].profile[expense.payer.name] = 0 - expense.amount / split;
+
+      if (consumer in payer.profile) {
+        payer.profile[consumer] += expense.amount / split
         const debtor = participants.filter(person => person.name === consumer)[0];
-        debtor.profile[expense.payer.name] = 0 - expense.amount / split;
-        console.log('Other profile', debtor.profile)
+        debtor.profile[payer.name] -= expense.amount/split;
+        let updatedParticipants = participants.map((p) => {
+          if(p.name === payer.name) {
+            return payer;
+          }
+          return p;
+        })
+        localStorage.setItem('participants', JSON.stringify(updatedParticipants));
+        console.log(updatedParticipants)
+
+      } else if (consumer !== payer.name){
+        payer.profile[consumer] = 0 + expense.amount / split;
+        const debtor = participants.filter(person => person.name === consumer)[0];
+        debtor.profile[payer.name] = 0 - expense.amount / split;
+        payer.profile[debtor.name] = 0 + expense.amount / split;
+        console.log('DEBTOR', debtor)
+        console.log('PAYER', payer)
+        let updatedParticipants = participants.map(p => {
+          if(p.name === debtor.name) {
+            return debtor;
+          } else if(p.name === payer.name) {
+            return payer;
+          }
+            return p;
+        })
+        localStorage.setItem('participants', JSON.stringify(updatedParticipants));
+        console.log(participants)
+        console.log(updatedParticipants)
+        // localStorage.setItem('participants', updatedParticipants)
+        // console.log('UPDATed', updatedParticipants)
       }
       console.log(people)
       this.setState(prevState => ({ expenses: [...prevState.expenses, expense] }));
@@ -100,7 +126,6 @@ class App extends Component {
   };
 
   render() {
-    console.log(this.state.expenses)
     return (
       <div>
         <Router>

@@ -6,9 +6,13 @@ import ExpenseForm from './ExpenseForm';
 export default class Event extends Component {
   state = { expenses: [], eventLog: {} };
 
-  handleAddExpense = (expense) => {
-    this.setState((prevState) => ({expenses: [...prevState.expenses, expense]}))
-    localStorage.set('expenses', JSON.stringify(this.state.expenses))
+  getUserProfiles = ()=> {
+    let debtorsList = [];
+    const participants = JSON.parse(localStorage.getItem('participants'));
+    const profiles = participants.filter(person => Object.keys(person.profile));
+    console.log(profiles);
+    console.log(participants)
+    return profiles;
   }
 
   render() {
@@ -18,6 +22,10 @@ export default class Event extends Component {
         <div>
           <Header as="h1">{localStorage.getItem('eventName')}</Header>
         </div>
+
+        <pre>
+          <p>{JSON.stringify(this.getUserProfiles(), null, 2)}</p>
+        </pre>
 
         <span>
           Event Total{':$0'}
