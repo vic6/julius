@@ -3,15 +3,16 @@ import { Form } from 'semantic-ui-react';
 import ExpenseForm from './ExpenseForm'
 
 export default class Expense extends Component {
-  state = {items: []}
+  state = {name: '', payer: '', total: '', items: []}
 
-  handleAddItem = () => {
-    
+  handleAddItem = (item) => {
+    this.setState((prevState) => ({items: [...prevState.items, item]}))
   }
 
   render() {
+    console.log(this.state.items)
     return(
-      <ExpenseForm />
+      <ExpenseForm handleAddItem={this.handleAddItem} />
     )
   }
 }

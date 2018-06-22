@@ -4,6 +4,7 @@ import { Form, Button } from 'semantic-ui-react';
 import Home from './components/Home';
 import Navbar from './components/Navbar';
 import Event from './components/Event';
+import Expense from './components/Expense';
 
 class App extends Component {
   state = { eventName: '', participants: [{ name: '' }, { name: '' }] };
@@ -22,13 +23,13 @@ class App extends Component {
 
   eventNameChange = event => {
     this.setState({ eventName: event.target.value });
-    // localStorage.setItem('eventName', this.state.eventName)
   };
 
   submitEvent = () => {
-    localStorage.setItem('eventName', this.state.eventName)
-    localStorage.setItem('participants', this.state.participants)
-  }
+    console.log('SUBmit', this.state)
+    localStorage.setItem('eventName', this.state.eventName);
+    localStorage.setItem('participants', JSON.stringify(this.state.participants));
+  };
 
   handleChange = (event, id) => {
     console.log('Form id', id);
@@ -67,7 +68,7 @@ class App extends Component {
             <Route
               exact
               path="/"
-              render={(props) => (
+              render={props => (
                 <Home
                   eventName={this.state.eventName}
                   eventNameChange={this.eventNameChange}
@@ -83,10 +84,15 @@ class App extends Component {
             <Route
               exact
               path="/event"
-              component={(props) => (
-                <Event participants={this.state.participants} eventName={this.state.eventName} {...props} />
+              component={props => (
+                <Event
+                  participants={this.state.participants}
+                  eventName={this.state.eventName}
+                  {...props}
+                />
               )}
             />
+            <Route path="/expense/create" render={props => <Expense {...props} />} />
           </div>
         </Router>
       </div>

@@ -1,24 +1,24 @@
-import React, {Component} from 'react';
-import { Button, Grid,Header } from 'semantic-ui-react';
+import React, { Component } from 'react';
+import { Button, Grid, Header } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
 import ExpenseForm from './ExpenseForm';
 
-
 export default class Event extends Component {
-  state = { expenses: [], eventLog: {}};
-
+  state = { expenses: [], eventLog: {} };
 
   render() {
-    console.log(this.props)
+    console.log(this.props);
     return (
       <div>
         <div>
-          <Header as='h1'>{localStorage.getItem('eventName')}</Header>
+          <Header as="h1">{localStorage.getItem('eventName')}</Header>
         </div>
 
-        <div>
-          <span>Event Total<Button>Add Expense</Button></span>
-        </div>
+        <span>
+          Event Total{':$0'}
+          <Link href='/expense/create/' to='/expense/create'><Button>Add Expense</Button></Link>
+        </span>
       </div>
-    )
+    );
   }
 }

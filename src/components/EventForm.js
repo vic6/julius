@@ -11,7 +11,7 @@ export default class EventForm extends Component {
         <Form.Input
           onChange={this.props.eventNameChange}
           label="Event name"
-          placeholder="Dinner"
+          placeholder="Camping Trip"
           type="text"
           value={this.props.eventName}
         />
