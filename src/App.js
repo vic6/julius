@@ -7,15 +7,53 @@ import Event from './components/Event';
 import Expense from './components/Expense';
 
 class App extends Component {
-  state = { eventName: '', participants: [{ name: '' }, { name: '' }], expenses: [] };
+  state = { eventName: '', participants: [{ name: '', profile: {} }, { name: '', profile: {} }], expenses: [] };
 
   addParticipant = () => {
-    this.setState(prevState => ({ participants: [...prevState.participants, { name: '' }] }));
+    this.setState(prevState => ({ participants: [...prevState.participants, { name: '', profile: {} }] }));
   };
 
-  handleAddExpense = expense => {
-    this.setState(prevState => ({ expenses: [...prevState.expenses, expense] }));
-  };
+  // handleAddExpense = expense => {
+  //   this.handleAddExpense(expense)
+  //   this.setState(prevState => ({ expenses: [...prevState.expenses, expense] }));
+  // };
+
+  // for (let consumer of consumers) {
+  //     // console.log(consumer);
+  //     if (consumer.name in this.payer.profile) {
+  //       // console.log('IN PROFILE');
+  //       this.payer.profile[consumer.name] += item.amount / split;
+  //       consumer.profile[this.payer.name] -= item.amount / split;
+  //     } else if (consumer.name !== this.payer.name) {
+  //       // console.log('NOT in profile');
+  //       this.payer.profile[consumer.name] = 0 + item.amount / split;
+  //       consumer.profile[this.payer.name] = 0 - item.amount / split;
+  //     }
+  //     // consumer.expenses.push(this);
+  //   }
+
+  handleAddExpense = (expense) => {
+    const newExpense = expense
+    const split = expense.consumers.length;
+    const participants = JSON.parse(localStorage.getItem('participants'));
+    console.log('ParTicpants', participants)
+    const people = expense.consumers.map((consumer) => {
+      if (consumer in expense.payer.profile) {
+        newExpense.payer.profile[consumer] += expense.amount / split
+      } else if (consumer !== expense.payer.name){
+        newExpense.payer.profile[consumer] = 0 + expense.amount / split;
+        // participants[consumer].profile[expense.payer.name] = 0 - expense.amount / split;
+        const debtor = participants.filter(person => person.name === consumer)[0];
+        debtor.profile[expense.payer.name] = 0 - expense.amount / split;
+        console.log('Other profile', debtor.profile)
+      }
+      console.log(people)
+      this.setState(prevState => ({ expenses: [...prevState.expenses, expense] }));
+
+    })
+    console.log('NEW', newExpense);
+    return newExpense;
+  }
 
   removeParticipant = formKey => {
     console.log(formKey);
@@ -30,7 +68,6 @@ class App extends Component {
   };
 
   submitEvent = () => {
-    console.log('SUBmit', this.state);
     localStorage.setItem('eventName', this.state.eventName);
     localStorage.setItem('participants', JSON.stringify(this.state.participants));
   };
