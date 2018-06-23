@@ -50,7 +50,10 @@ export default class ExpenseForm extends Component {
 
   handleSelectChange = event => {
     const participants = JSON.parse(localStorage.getItem('participants'));
+    console.log(participants)
+    console.log('Event',event.target.innerText)
     const payer = participants.filter(participant => participant.name === event.target.innerText)[0]
+    console.log(payer);
     this.setState({ payer });
   };
 

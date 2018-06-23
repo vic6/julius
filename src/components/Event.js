@@ -1,19 +1,39 @@
 import React, { Component } from 'react';
-import { Button, Grid, Header } from 'semantic-ui-react';
+import { Button, Grid, Header, Message } from 'semantic-ui-react';
 import { Link, Route } from 'react-router-dom';
 import ExpenseForm from './ExpenseForm';
 
 export default class Event extends Component {
-  state = { expenses: [], eventLog: {} };
+
+  // getUserProfiles = ()=> {
+  //   const participants = JSON.parse(localStorage.getItem('participants'));
+  //   return participants;
+  // }
+
+  renderExpenses = () => {
+    let expenses = [];
+  }
 
   getUserProfiles = ()=> {
-    let debtorsList = [];
+    const debtorsList = [];
     const participants = JSON.parse(localStorage.getItem('participants'));
-    const profiles = participants.filter(person => Object.keys(person.profile));
-    console.log(profiles);
-    console.log(participants)
-    return profiles;
+    const profiles = participants.map(person => {
+      console.log('PROFILE', person.profile)
+      console.log(Object.keys(person.profile))
+      const profileNames = Object.keys(person.profile)
+
+      if(profileNames.length > 0) {
+        profileNames.map(name => {
+          if (person.profile[name] > 0) {
+            debtorsList.push(`${name} owes ${person.name} $${person.profile[name]}`)
+          }
+        })
+      }
+    })
+    console.log('DEBT')
+    return debtorsList;
   }
+
 
   render() {
     console.log(this.props);

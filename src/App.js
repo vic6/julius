@@ -38,6 +38,9 @@ class App extends Component {
     const participants = JSON.parse(localStorage.getItem('participants'));
     const {payer} = expense;
     const people = expense.consumers.map((consumer) => {
+      console.log('Expense', expense)
+      console.log('Current Payer', payer);
+      console.log('Current consumer', consumer);
 
       if (consumer in payer.profile) {
         payer.profile[consumer] += expense.amount / split
@@ -154,6 +157,7 @@ class App extends Component {
                 <Event
                   participants={this.state.participants}
                   eventName={this.state.eventName}
+                  expenses={this.state.expenses}
                   {...props}
                 />
               )}
