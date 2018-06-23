@@ -5,7 +5,7 @@ import EventForm from './EventForm';
 export default class Home extends Component {
   render() {
     return (
-      <Container>
+      <div>
         <Header as="h1">
           Welcome to Julius
           <Header.Subheader>Create a new event to begin</Header.Subheader>
@@ -19,7 +19,7 @@ export default class Home extends Component {
           handleChange={this.props.handleChange}
           renderForms={this.props.renderForms}
         />
-      </Container>
+      </div>
     );
   }
 }
