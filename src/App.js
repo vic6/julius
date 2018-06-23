@@ -1,88 +1,74 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Redirect, Route } from 'react-router-dom';
-import { Form, Button } from 'semantic-ui-react';
+import { Form, Button, Container } from 'semantic-ui-react';
 import Home from './components/Home';
 import Navbar from './components/Navbar';
 import Event from './components/Event';
 import Expense from './components/Expense';
 
 class App extends Component {
-  state = { eventName: '', participants: [{ name: '', profile: {} }, { name: '', profile: {} }], expenses: [] };
-
-  addParticipant = () => {
-    this.setState(prevState => ({ participants: [...prevState.participants, { name: '', profile: {} }] }));
+  state = {
+    eventName: '',
+    participants: [{ name: '', profile: {} }, { name: '', profile: {} }],
+    expenses: []
   };
 
-  // handleAddExpense = expense => {
-  //   this.handleAddExpense(expense)
-  //   this.setState(prevState => ({ expenses: [...prevState.expenses, expense] }));
-  // };
+  componentDidMount = () => {
+    console.log('MOUNT', localStorage.getItem('expenses'));
+    if (localStorage.getItem('expenses')) {
+      const expenses = JSON.parse(localStorage.getItem('expenses'));
+      this.setState({
+        expenses
+      });
+    }
+  };
 
-  // for (let consumer of consumers) {
-  //     // console.log(consumer);
-  //     if (consumer.name in this.payer.profile) {
-  //       // console.log('IN PROFILE');
-  //       this.payer.profile[consumer.name] += item.amount / split;
-  //       consumer.profile[this.payer.name] -= item.amount / split;
-  //     } else if (consumer.name !== this.payer.name) {
-  //       // console.log('NOT in profile');
-  //       this.payer.profile[consumer.name] = 0 + item.amount / split;
-  //       consumer.profile[this.payer.name] = 0 - item.amount / split;
-  //     }
-  //     // consumer.expenses.push(this);
-  //   }
+  addParticipant = () => {
+    this.setState(prevState => ({
+      participants: [...prevState.participants, { name: '', profile: {} }]
+    }));
+  };
 
-  handleAddExpense = (expense) => {
-    const newExpense = expense
+  handleAddExpense = (expense, resetForm) => {
     const split = expense.consumers.length;
     const participants = JSON.parse(localStorage.getItem('participants'));
-    const {payer} = expense;
-    const people = expense.consumers.map((consumer) => {
-      console.log('Expense', expense)
-      console.log('Current Payer', payer);
-      console.log('Current consumer', consumer);
-
+    const { payer } = expense;
+    expense.consumers.map(consumer => {
       if (consumer in payer.profile) {
-        payer.profile[consumer] += expense.amount / split
+        payer.profile[consumer] += expense.amount / split;
         const debtor = participants.filter(person => person.name === consumer)[0];
-        debtor.profile[payer.name] -= expense.amount/split;
-        let updatedParticipants = participants.map((p) => {
-          if(p.name === payer.name) {
+        debtor.profile[payer.name] -= expense.amount / split;
+        const updatedParticipants = participants.map(person => {
+          if (person.name === payer.name) {
             return payer;
           }
-          return p;
-        })
+          return person;
+        });
         localStorage.setItem('participants', JSON.stringify(updatedParticipants));
-        console.log(updatedParticipants)
-
-      } else if (consumer !== payer.name){
-        payer.profile[consumer] = 0 + expense.amount / split;
+      } else if (consumer !== payer.name) {
+        // payer.profile[consumer] = 0 + expense.amount / split;
         const debtor = participants.filter(person => person.name === consumer)[0];
         debtor.profile[payer.name] = 0 - expense.amount / split;
         payer.profile[debtor.name] = 0 + expense.amount / split;
-        console.log('DEBTOR', debtor)
-        console.log('PAYER', payer)
-        let updatedParticipants = participants.map(p => {
-          if(p.name === debtor.name) {
+        const updatedParticipants = participants.map(person => {
+          if (person.name === debtor.name) {
             return debtor;
-          } else if(p.name === payer.name) {
+          } else if (person.name === payer.name) {
             return payer;
           }
-            return p;
-        })
+          return person;
+        });
         localStorage.setItem('participants', JSON.stringify(updatedParticipants));
-        console.log(participants)
-        console.log(updatedParticipants)
-        // localStorage.setItem('participants', updatedParticipants)
-        // console.log('UPDATed', updatedParticipants)
       }
-      console.log(people)
-      this.setState(prevState => ({ expenses: [...prevState.expenses, expense] }));
-
-    })
-    console.log('NEW', newExpense);
-    return newExpense;
-  }
+      return expense;
+    });
+    this.setState(prevState => ({ expenses: [...prevState.expenses, expense] }));
+    // const expenses = JSON.parse(localStorage.getItem('expenses'));
+    const updatedExpenses = [...this.state.expenses, expense];
+    console.log('UPDATED expenses', updatedExpenses);
+    localStorage.setItem('expenses', JSON.stringify(updatedExpenses));
+    resetForm();
+  };
 
   removeParticipant = formKey => {
     console.log(formKey);
@@ -97,8 +83,16 @@ class App extends Component {
   };
 
   submitEvent = () => {
+    localStorage.removeItem('eventName');
+    localStorage.removeItem('participants');
+    localStorage.removeItem('expenses');
+    this.setState({
+      expenses: []
+    });
+
     localStorage.setItem('eventName', this.state.eventName);
     localStorage.setItem('participants', JSON.stringify(this.state.participants));
+    localStorage.setItem('expenses', []);
   };
 
   handleChange = (event, id) => {
@@ -134,38 +128,40 @@ class App extends Component {
         <Router>
           <div>
             <Navbar />
-            <Route
-              exact
-              path="/"
-              render={props => (
-                <Home
-                  eventName={this.state.eventName}
-                  eventNameChange={this.eventNameChange}
-                  submitEvent={this.submitEvent}
-                  addParticipant={this.addParticipant}
-                  removeParticipant={this.removeParticipant}
-                  handleChange={this.handleChange}
-                  renderForms={this.renderForms}
-                  {...props}
-                />
-              )}
-            />
-            <Route
-              exact
-              path="/event"
-              component={props => (
-                <Event
-                  participants={this.state.participants}
-                  eventName={this.state.eventName}
-                  expenses={this.state.expenses}
-                  {...props}
-                />
-              )}
-            />
-            <Route
-              path="/expense/create"
-              render={props => <Expense handleAddExpense={this.handleAddExpense} {...props} />}
-            />
+            <Container>
+              <Route
+                exact
+                path="/"
+                render={props => (
+                  <Home
+                    eventName={this.state.eventName}
+                    eventNameChange={this.eventNameChange}
+                    submitEvent={this.submitEvent}
+                    addParticipant={this.addParticipant}
+                    removeParticipant={this.removeParticipant}
+                    handleChange={this.handleChange}
+                    renderForms={this.renderForms}
+                    {...props}
+                  />
+                )}
+              />
+              <Route
+                exact
+                path="/event"
+                component={props => (
+                  <Event
+                    participants={this.state.participants}
+                    eventName={this.state.eventName}
+                    expenses={this.state.expenses}
+                    {...props}
+                  />
+                )}
+              />
+              <Route
+                path="/expense/new"
+                render={props => <Expense handleAddExpense={this.handleAddExpense} {...props} />}
+              />
+            </Container>
           </div>
         </Router>
       </div>

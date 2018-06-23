@@ -1,3 +1,6 @@
-.event-form {
-
+.event-form__participants {
+  padding: 20px;
+  background: #dbc8ed;
+  border: 1px #b351db solid;
+  margin-bottom: 20px;
 }
