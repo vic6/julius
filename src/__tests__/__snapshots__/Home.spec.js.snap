@@ -1,0 +1,84 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Home renders correctly 1`] = `
+<div>
+  <h1
+    className="ui header"
+  >
+    Welcome to Julius
+    <div
+      className="sub header"
+    >
+      Create a new event to begin
+    </div>
+  </h1>
+  <form
+    action={undefined}
+    className="ui form event-form"
+    onSubmit={[Function]}
+  >
+    <div
+      className="field"
+    >
+      <label
+        htmlFor={undefined}
+      >
+        Event name
+      </label>
+      <div
+        className="ui input"
+        content={undefined}
+      >
+        <input
+          disabled={undefined}
+          onChange={[Function]}
+          placeholder="Camping Trip"
+          required={undefined}
+          tabIndex={undefined}
+          type="text"
+          value={undefined}
+        />
+      </div>
+    </div>
+    <div
+      className="field"
+    >
+      <label>
+        Participents
+      </label>
+    </div>
+    <div
+      className="event-form__participants"
+    >
+      <button
+        className="ui button"
+        disabled={undefined}
+        onClick={[Function]}
+        role="button"
+        tabIndex={undefined}
+      >
+        Add person
+      </button>
+    </div>
+    <a
+      href="/event"
+    >
+      <div
+        className="field"
+      >
+        <button
+          className="ui button"
+          disabled={undefined}
+          onClick={[Function]}
+          required={undefined}
+          role="button"
+          tabIndex={undefined}
+          type={undefined}
+        >
+          Create Event
+        </button>
+      </div>
+    </a>
+  </form>
+</div>
+`;

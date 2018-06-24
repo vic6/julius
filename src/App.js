@@ -8,9 +8,10 @@ import Expense from './components/Expense';
 
 class App extends Component {
   state = {
-    eventName: '',
-    participants: [{ name: '', profile: {} }, { name: '', profile: {} }],
-    expenses: []
+    eventName:'',
+    participants: [{name: '', profile: {}}, {name: '', profile: {}}],
+    expenses: [],
+    errors: false
   };
 
   componentDidMount = () => {
@@ -46,7 +47,6 @@ class App extends Component {
         });
         localStorage.setItem('participants', JSON.stringify(updatedParticipants));
       } else if (consumer !== payer.name) {
-        // payer.profile[consumer] = 0 + expense.amount / split;
         const debtor = participants.filter(person => person.name === consumer)[0];
         debtor.profile[payer.name] = 0 - expense.amount / split;
         payer.profile[debtor.name] = 0 + expense.amount / split;
@@ -63,19 +63,15 @@ class App extends Component {
       return expense;
     });
     this.setState(prevState => ({ expenses: [...prevState.expenses, expense] }));
-    // const expenses = JSON.parse(localStorage.getItem('expenses'));
     const updatedExpenses = [...this.state.expenses, expense];
-    console.log('UPDATED expenses', updatedExpenses);
     localStorage.setItem('expenses', JSON.stringify(updatedExpenses));
     resetForm();
   };
 
   removeParticipant = formKey => {
-    console.log(formKey);
     this.setState({
       participants: this.state.participants.filter((form, formId) => formId !== formKey)
     });
-    console.log(this.state.participants);
   };
 
   eventNameChange = event => {
@@ -83,16 +79,21 @@ class App extends Component {
   };
 
   submitEvent = () => {
-    localStorage.removeItem('eventName');
-    localStorage.removeItem('participants');
-    localStorage.removeItem('expenses');
-    this.setState({
-      expenses: []
-    });
-
-    localStorage.setItem('eventName', this.state.eventName);
-    localStorage.setItem('participants', JSON.stringify(this.state.participants));
-    localStorage.setItem('expenses', []);
+    console.log('wtf')
+    // let names = this.state.participants.filter(person => person.name.length < 2);
+    // console.log(names)
+    // if (names.length > 0) {
+    //   this.setState(() => ({errors: 'Names must be '}))
+    // } else {
+      // this.setState(() => ({errors: false}))
+      localStorage.removeItem('eventName');
+      localStorage.removeItem('participants');
+      localStorage.removeItem('expenses');
+      this.setState({expenses: []});
+      localStorage.setItem('eventName', this.state.eventName);
+      localStorage.setItem('participants', JSON.stringify(this.state.participants));
+      localStorage.setItem('expenses', []);
+    // }
   };
 
   handleChange = (event, id) => {
@@ -114,6 +115,7 @@ class App extends Component {
             type="text"
             value={particpant.name}
             onChange={event => this.handleChange(event, id)}
+            required
           />
           <Button onClick={() => this.removeParticipant(id)}>Remove</Button>
         </Form.Group>
@@ -136,6 +138,7 @@ class App extends Component {
                   <Home
                     eventName={this.state.eventName}
                     eventNameChange={this.eventNameChange}
+                    errors={this.state.errors}
                     submitEvent={this.submitEvent}
                     addParticipant={this.addParticipant}
                     removeParticipant={this.removeParticipant}
@@ -150,8 +153,8 @@ class App extends Component {
                 path="/event"
                 component={props => (
                   <Event
-                    participants={this.state.participants}
-                    eventName={this.state.eventName}
+                    // participants={this.state.participants}
+                    // eventName={this.state.eventName}
                     expenses={this.state.expenses}
                     {...props}
                   />

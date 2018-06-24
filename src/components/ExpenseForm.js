@@ -17,11 +17,24 @@ export default class ExpenseForm extends Component {
     });
   };
 
+  handleAmountChange = event => {
+    console.log('amount');
+    const amount = event.target.value;
+    const currencyCheck = /^\d{1,}(\.\d{0,2})?$/;
+    // allows user to clear amount
+    if (!amount || amount.match(currencyCheck)) {
+      this.setState(() => ({ amount }));
+    }
+  };
+
   resetExpenseForm = () => {
     this.setState({
-      payer: '', expenseName: '', amount: '', consumers: ''
-    })
-  }
+      payer: '',
+      expenseName: '',
+      amount: '',
+      consumers: ''
+    });
+  };
 
   handleSelectChange = event => {
     const participants = JSON.parse(localStorage.getItem('participants'));
@@ -59,7 +72,7 @@ export default class ExpenseForm extends Component {
     const participants = JSON.parse(localStorage.getItem('participants'));
     const options = participants.map(person => ({ text: person.name, value: person.name }));
     return (
-      <Form onChange={this.handleChange} onSubmit={() => this.props.handleAddExpense(this.state, this.resetExpenseForm)}>
+      <Form onSubmit={() => this.props.handleAddExpense(this.state, this.resetExpenseForm)}>
         <Form.Field
           required
           onChange={this.handleSelectChange}
@@ -75,13 +88,22 @@ export default class ExpenseForm extends Component {
           type="text"
           placeholder="flashlight"
           value={expenseName}
+          onChange={this.handleChange}
         />
-        <Form.Input label="Amount" name="amount" type="number" required value={amount} />
-        <Form.Field name="consumers" label="Split Between" required/>
+        <Form.Input
+          label="Amount"
+          name="amount"
+          type="text"
+          required
+          value={amount}
+          onChange={this.handleAmountChange}
+        />
+        <Form.Field name="consumers" label="Split Between" required />
         {this.renderCheckboxes()}
         <Button primary>Enter Item</Button>
-        <Link href='/event'to='/event'><Button secondary>Back</Button></Link>
-
+        <Link href="/event" to="/event">
+          <Button secondary>Back</Button>
+        </Link>
       </Form>
     );
   }

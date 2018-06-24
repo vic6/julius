@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { Container, Header } from 'semantic-ui-react';
+import { Header } from 'semantic-ui-react';
 import EventForm from './EventForm';
 
 export default class Home extends Component {
   render() {
+    // console.log('HOME',this.props.renderForms())
     return (
       <div>
         <Header as="h1">
@@ -13,6 +14,7 @@ export default class Home extends Component {
         <EventForm
           eventName={this.props.eventName}
           eventNameChange={this.props.eventNameChange}
+          errors={this.props.errors}
           submitEvent={this.props.submitEvent}
           addParticipant={this.props.addParticipant}
           removeParticipant={this.props.removeParticipant}
