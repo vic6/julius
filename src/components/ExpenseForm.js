@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Checkbox, Form, Message, Select } from 'semantic-ui-react';
+import { Button, Form, Message, Select } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 
 export default class ExpenseForm extends Component {
@@ -12,9 +12,6 @@ export default class ExpenseForm extends Component {
     success: null
   };
 
-  componentDidMount() {
-
-  }
   handleChange = event => {
     const { name, value } = event.target;
     this.setState({
@@ -40,16 +37,14 @@ export default class ExpenseForm extends Component {
     });
   };
 
-  handleSelectChange = (event) => {
+  handleSelectChange = event => {
     const participants = JSON.parse(localStorage.getItem('participants'));
     const payer =
       participants.filter(participant => participant.name === event.target.innerText)[0] || '';
     this.setState({ payer });
   };
 
-  toggleCheckbox = (particpant, event) => {
-    console.log(event.target)
-
+  toggleCheckbox = particpant => {
     if (this.state.consumers.includes(particpant.name)) {
       this.setState({
         consumers: this.state.consumers.filter(person => person !== particpant.name)
@@ -79,14 +74,14 @@ export default class ExpenseForm extends Component {
   };
 
   renderCheckboxes = () =>
-    JSON.parse(localStorage.getItem('participants')).map((person) => (
+    JSON.parse(localStorage.getItem('participants')).map(person => (
       <Form.Field
         key={person.name}
-        onChange={(event) => this.toggleCheckbox(person, event)}
+        onChange={event => this.toggleCheckbox(person, event)}
         label={person.name}
         value={person.name}
-        control='input'
-        type='checkbox'
+        control="input"
+        type="checkbox"
       />
     ));
 

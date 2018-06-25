@@ -4,11 +4,10 @@ import EventForm from './EventForm';
 
 export default class Home extends Component {
   render() {
-    // console.log('HOME',this.props.renderForms())
-    console.log('PROPS', this.props)
     return (
       <div>
         <Header as="h1">
+
           Welcome to Julius
           <Header.Subheader>Create a new event to begin</Header.Subheader>
         </Header>
