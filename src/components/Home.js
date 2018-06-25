@@ -5,6 +5,7 @@ import EventForm from './EventForm';
 export default class Home extends Component {
   render() {
     // console.log('HOME',this.props.renderForms())
+    console.log('PROPS', this.props)
     return (
       <div>
         <Header as="h1">
@@ -20,6 +21,7 @@ export default class Home extends Component {
           removeParticipant={this.props.removeParticipant}
           handleChange={this.props.handleChange}
           renderForms={this.props.renderForms}
+          history={this.props.history}
         />
       </div>
     );

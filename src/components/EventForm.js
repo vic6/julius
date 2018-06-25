@@ -68,7 +68,7 @@ export default class EventForm extends Component {
   render() {
     console.log(this.props.errors)
     return (
-      <Form className="event-form" onSubmit={this.props.onSubmit}>
+      <Form className="event-form" onSubmit={()=>this.props.submitEvent(this.props)}>
         <Form.Input
           onChange={this.props.eventNameChange}
           label="Event name"
@@ -77,16 +77,16 @@ export default class EventForm extends Component {
           value={this.props.eventName}
           required
         />
-        {/* {this.props.errors && <p>{this.props.errors}</p>} */}
+        {this.props.errors && <p>{this.props.errors}</p>}
         <Form.Field label="Participents" />
         <div className="event-form__participants">
           {!!this.props.renderForms && this.props.renderForms()}
           <Button onClick={this.props.addParticipant}>Add person</Button>
         </div>
 
-        <Link to='/event' href="/event">
-          <Form.Button>Create Event</Form.Button>
-        </Link>
+        {/* <Link to='/event' href="/event"> */}
+          <Form.Button type='submit'>Create Event</Form.Button>
+        {/* </Link> */}
       </Form>
     );
   }

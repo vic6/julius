@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Redirect, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 import { Form, Button, Container } from 'semantic-ui-react';
 import Home from './components/Home';
 import Navbar from './components/Navbar';
 import Event from './components/Event';
 import Expense from './components/Expense';
+import './App.css';
 
 class App extends Component {
   state = {
-    eventName:'',
-    participants: [{name: '', profile: {}}, {name: '', profile: {}}],
+    eventName: '',
+    participants: [{ name: '', profile: {} }, { name: '', profile: {} }],
     expenses: [],
     errors: false
   };
@@ -30,42 +31,49 @@ class App extends Component {
     }));
   };
 
-  handleAddExpense = (expense, resetForm) => {
-    const split = expense.consumers.length;
-    const participants = JSON.parse(localStorage.getItem('participants'));
-    const { payer } = expense;
-    expense.consumers.map(consumer => {
-      if (consumer in payer.profile) {
-        payer.profile[consumer] += expense.amount / split;
-        const debtor = participants.filter(person => person.name === consumer)[0];
-        debtor.profile[payer.name] -= expense.amount / split;
-        const updatedParticipants = participants.map(person => {
-          if (person.name === payer.name) {
-            return payer;
-          }
-          return person;
-        });
-        localStorage.setItem('participants', JSON.stringify(updatedParticipants));
-      } else if (consumer !== payer.name) {
-        const debtor = participants.filter(person => person.name === consumer)[0];
-        debtor.profile[payer.name] = 0 - expense.amount / split;
-        payer.profile[debtor.name] = 0 + expense.amount / split;
-        const updatedParticipants = participants.map(person => {
-          if (person.name === debtor.name) {
-            return debtor;
-          } else if (person.name === payer.name) {
-            return payer;
-          }
-          return person;
-        });
-        localStorage.setItem('participants', JSON.stringify(updatedParticipants));
-      }
-      return expense;
-    });
-    this.setState(prevState => ({ expenses: [...prevState.expenses, expense] }));
-    const updatedExpenses = [...this.state.expenses, expense];
-    localStorage.setItem('expenses', JSON.stringify(updatedExpenses));
-    resetForm();
+  handleAddExpense = (expense, resetForm, isFormValid) => {
+
+    if (isFormValid()) {
+      const split = expense.consumers.length;
+      console.log(expense.consumers);
+      if(!expense.payer) return;
+      if (split.length === 0) return;
+      const participants = JSON.parse(localStorage.getItem('participants'));
+      const { payer } = expense;
+      expense.consumers.map(consumer => {
+        if (consumer in payer.profile) {
+          payer.profile[consumer] += expense.amount / split;
+          const debtor = participants.filter(person => person.name === consumer)[0];
+          debtor.profile[payer.name] -= expense.amount / split;
+          const updatedParticipants = participants.map(person => {
+            if (person.name === payer.name) {
+              return payer;
+            }
+            return person;
+          });
+          localStorage.setItem('participants', JSON.stringify(updatedParticipants));
+        } else if (consumer !== payer.name) {
+          const debtor = participants.filter(person => person.name === consumer)[0];
+          debtor.profile[payer.name] = 0 - expense.amount / split;
+          payer.profile[debtor.name] = 0 + expense.amount / split;
+          const updatedParticipants = participants.map(person => {
+            if (person.name === debtor.name) {
+              return debtor;
+            } else if (person.name === payer.name) {
+              return payer;
+            }
+            return person;
+          });
+          localStorage.setItem('participants', JSON.stringify(updatedParticipants));
+        }
+        return expense;
+      });
+      this.setState(prevState => ({ expenses: [...prevState.expenses, expense] }));
+      const updatedExpenses = [...this.state.expenses, expense];
+      localStorage.setItem('expenses', JSON.stringify(updatedExpenses));
+      resetForm();
+
+    }
   };
 
   removeParticipant = formKey => {
@@ -78,22 +86,26 @@ class App extends Component {
     this.setState({ eventName: event.target.value });
   };
 
-  submitEvent = () => {
-    console.log('wtf')
-    // let names = this.state.participants.filter(person => person.name.length < 2);
-    // console.log(names)
-    // if (names.length > 0) {
-    //   this.setState(() => ({errors: 'Names must be '}))
-    // } else {
-      // this.setState(() => ({errors: false}))
+  submitEvent = props => {
+    const names = new Set();
+    const hasDuplicates = this.state.participants.some(
+      person => names.size === names.add(person.name).size
+    );
+    if (hasDuplicates) {
+      this.setState({
+        errors: 'Duplicate names or not allowed'
+      });
+    } else {
+      this.setState({ errors: false });
       localStorage.removeItem('eventName');
       localStorage.removeItem('participants');
       localStorage.removeItem('expenses');
-      this.setState({expenses: []});
+      this.setState({ expenses: [] });
       localStorage.setItem('eventName', this.state.eventName);
       localStorage.setItem('participants', JSON.stringify(this.state.participants));
       localStorage.setItem('expenses', []);
-    // }
+      props.history.push('/event');
+    }
   };
 
   handleChange = (event, id) => {
@@ -131,39 +143,41 @@ class App extends Component {
           <div>
             <Navbar />
             <Container>
-              <Route
-                exact
-                path="/"
-                render={props => (
-                  <Home
-                    eventName={this.state.eventName}
-                    eventNameChange={this.eventNameChange}
-                    errors={this.state.errors}
-                    submitEvent={this.submitEvent}
-                    addParticipant={this.addParticipant}
-                    removeParticipant={this.removeParticipant}
-                    handleChange={this.handleChange}
-                    renderForms={this.renderForms}
-                    {...props}
-                  />
-                )}
-              />
-              <Route
-                exact
-                path="/event"
-                component={props => (
-                  <Event
-                    // participants={this.state.participants}
-                    // eventName={this.state.eventName}
-                    expenses={this.state.expenses}
-                    {...props}
-                  />
-                )}
-              />
-              <Route
-                path="/expense/new"
-                render={props => <Expense handleAddExpense={this.handleAddExpense} {...props} />}
-              />
+              <Switch>
+                <Route
+                  exact
+                  path="/"
+                  render={props => (
+                    <Home
+                      eventName={this.state.eventName}
+                      eventNameChange={this.eventNameChange}
+                      errors={this.state.errors}
+                      submitEvent={this.submitEvent}
+                      addParticipant={this.addParticipant}
+                      removeParticipant={this.removeParticipant}
+                      handleChange={this.handleChange}
+                      renderForms={this.renderForms}
+                      {...props}
+                    />
+                  )}
+                />
+                <Route
+                  exact
+                  path="/event"
+                  component={props =>
+                    localStorage.getItem('eventName') ? (
+                      <Event expenses={this.state.expenses} {...props} />
+                    ) : (
+                      <Redirect to="/" />
+                    )
+                  }
+                />
+                <Route
+                  path="/expense/new"
+                  render={props => <Expense handleAddExpense={this.handleAddExpense} {...props} />}
+                />
+                <Redirect to="/" />
+              </Switch>
             </Container>
           </div>
         </Router>
