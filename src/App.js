@@ -16,7 +16,6 @@ class App extends Component {
   };
 
   componentDidMount = () => {
-    console.log('MOUNT', localStorage.getItem('expenses'));
     if (localStorage.getItem('expenses')) {
       const expenses = JSON.parse(localStorage.getItem('expenses'));
       this.setState({
@@ -34,7 +33,6 @@ class App extends Component {
   handleAddExpense = (expense, resetForm, isFormValid) => {
     if (isFormValid()) {
       const split = expense.consumers.length;
-      console.log(expense.consumers);
       if (!expense.payer) return;
       if (split.length === 0) return;
       const participants = JSON.parse(localStorage.getItem('participants'));
@@ -67,7 +65,8 @@ class App extends Component {
         }
         return expense;
       });
-      document.querySelectorAll('input[type=checkbox]').forEach( el => el.checked = false );
+
+      document.querySelectorAll('input[type=checkbox]').forEach(el => (el.checked = false));
       this.setState(prevState => ({ expenses: [expense, ...prevState.expenses] }));
       const updatedExpenses = [...this.state.expenses, expense];
       localStorage.setItem('expenses', JSON.stringify(updatedExpenses));
@@ -111,16 +110,15 @@ class App extends Component {
   };
 
   handleChange = (event, id) => {
-    console.log('Form id', id);
     const newParticipants = this.state.participants.map((person, formId) => {
       if (id !== formId) return person;
       return { ...person, name: event.target.value };
     });
-
     this.setState({ participants: newParticipants });
   };
 
   renderForms = () => {
+    // key should use a uuid rather than index
     const userForms = this.state.participants.map((particpant, id) => (
       <div key={id}>
         <Form.Group>
@@ -129,7 +127,6 @@ class App extends Component {
             type="text"
             value={particpant.name}
             onChange={event => this.handleChange(event, id)}
-            required
           />
           <Button onClick={() => this.removeParticipant(id)}>Remove</Button>
         </Form.Group>
