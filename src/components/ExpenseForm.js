@@ -12,6 +12,9 @@ export default class ExpenseForm extends Component {
     success: null
   };
 
+  componentDidMount() {
+
+  }
   handleChange = event => {
     const { name, value } = event.target;
     this.setState({
@@ -20,7 +23,6 @@ export default class ExpenseForm extends Component {
   };
 
   handleAmountChange = event => {
-    console.log('amount');
     const amount = event.target.value;
     const currencyCheck = /^\d{1,}(\.\d{0,2})?$/;
     // allows user to clear amount
@@ -34,19 +36,20 @@ export default class ExpenseForm extends Component {
       payer: '',
       expenseName: '',
       amount: '',
-      consumers: ''
+      consumers: []
     });
   };
 
-  handleSelectChange = event => {
+  handleSelectChange = (event) => {
     const participants = JSON.parse(localStorage.getItem('participants'));
     const payer =
       participants.filter(participant => participant.name === event.target.innerText)[0] || '';
-    console.log('payer', payer);
     this.setState({ payer });
   };
 
-  toggleCheckbox = particpant => {
+  toggleCheckbox = (particpant, event) => {
+    console.log(event.target)
+
     if (this.state.consumers.includes(particpant.name)) {
       this.setState({
         consumers: this.state.consumers.filter(person => person !== particpant.name)
@@ -59,28 +62,31 @@ export default class ExpenseForm extends Component {
   };
 
   isFormValid = () => {
-    console.log('PAYER',this.state.payer);
     if (this.state.payer.name === undefined) {
       this.setState({
         errors: 'Please select a payer'
       });
-    } else if(this.state.consumers.length < 1){
-      this.setState({errors: 'Select at least 1 person to charge'})
-    } else {
-      this.setState({ errors: false, success: <Message success header={`Expense Added: ${this.state.expenseName}`} /> });
-      return true
+      return false;
+    } else if (this.state.consumers.length < 1) {
+      this.setState({ errors: 'Select at least 1 person to charge' });
+      return false;
     }
+    this.setState({
+      errors: false,
+      success: <Message success header={`Expense Added: ${this.state.expenseName}`} />
+    });
+    return true;
   };
 
   renderCheckboxes = () =>
-    JSON.parse(localStorage.getItem('participants')).map(person => (
+    JSON.parse(localStorage.getItem('participants')).map((person) => (
       <Form.Field
         key={person.name}
-        onChange={() => this.toggleCheckbox(person)}
-        label={{ children: person.name }}
-        control={Checkbox}
+        onChange={(event) => this.toggleCheckbox(person, event)}
+        label={person.name}
         value={person.name}
-        required
+        control='input'
+        type='checkbox'
       />
     ));
 
@@ -88,8 +94,6 @@ export default class ExpenseForm extends Component {
     const { expenseName, amount } = this.state;
     const participants = JSON.parse(localStorage.getItem('participants'));
     const options = participants.map(person => ({ text: person.name, value: person.name }));
-    console.log('Error', this.state.errors);
-    console.log(this.state.success, !!this.state.success)
     return (
       <div>
         {this.state.success && this.state.success}
@@ -97,7 +101,7 @@ export default class ExpenseForm extends Component {
           onSubmit={() =>
             this.props.handleAddExpense(this.state, this.resetExpenseForm, this.isFormValid)
           }>
-          {this.state.errors && <p className='errors'>{this.state.errors}</p>}
+          {this.state.errors && <p className="errors">{this.state.errors}</p>}
           <Form.Field
             required
             placeholder="Name"
@@ -130,10 +134,9 @@ export default class ExpenseForm extends Component {
           {this.renderCheckboxes()}
           <Button primary>Enter Item</Button>
           <Link href="/event" to="/event">
-          <Button secondary>Back</Button>
-        </Link>
-      </Form>
-
+            <Button secondary>Back</Button>
+          </Link>
+        </Form>
       </div>
     );
   }

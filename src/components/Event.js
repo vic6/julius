@@ -1,24 +1,23 @@
 import React, { Component } from 'react';
-import { Button, Grid, Icon, Header, List } from 'semantic-ui-react';
-import { Link, Route } from 'react-router-dom';
-import ExpenseForm from './ExpenseForm';
+import { Button, Header, List } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
+import round2Fixed from '../utils/index';
 
 export default class Event extends Component {
   getUserProfiles = () => {
     const debtorsList = [];
     const participants = JSON.parse(localStorage.getItem('participants'));
 
-    if(participants.length > 0){
+    if (participants.length > 0) {
       participants.map(person => {
         const profileNames = Object.keys(person.profile);
-
         if (profileNames.length > 0) {
           profileNames.map(name => {
             if (person.profile[name] > 0) {
               debtorsList.push(
                 <List.Item
                   icon="money"
-                  content={`${name} owes ${person.name} $${person.profile[name]}`}
+                  content={`${name} owes ${person.name} $${round2Fixed(person.profile[name], 2)}`}
                 />
               );
             }
@@ -33,11 +32,9 @@ export default class Event extends Component {
 
   renderExpenses = () => {
     const participants = JSON.parse(localStorage.getItem('participants'));
-    // let expenses = JSON.parse(localStorage.getItem('expenses')) || [];
-
     const expenses = this.props.expenses.map(expense => {
       const { payer, amount, expenseName, consumers } = expense;
-      const content = consumers.length === participants.length ? 'Everybody' : 'Some People';
+      const content = consumers.length === participants.length ? 'Everybody' : consumers;
       return (
         <List.Item>
           <List.Icon name="shop" size="large" verticalAlign="middle" />
@@ -57,15 +54,12 @@ export default class Event extends Component {
         <div>
           <Header as="h1">{localStorage.getItem('eventName')}</Header>
         </div>
-        <List>
-          {this.getUserProfiles()}
-        </List>
-        <Header as='h2'>Expenses</Header>
+        <List>{this.getUserProfiles()}</List>
+        <Header as="h2">Expenses</Header>
         <List divided relaxed>
           {this.renderExpenses()}
         </List>
         <span>
-          Event Total{':$0'}
           <Link href="/expense/new/" to="/expense/new">
             <Button>Add Expense</Button>
           </Link>

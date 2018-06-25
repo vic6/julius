@@ -18,7 +18,7 @@ exports[`Home renders correctly 1`] = `
     onSubmit={[Function]}
   >
     <div
-      className="field"
+      className="required field"
     >
       <label
         htmlFor={undefined}
@@ -33,7 +33,7 @@ exports[`Home renders correctly 1`] = `
           disabled={undefined}
           onChange={[Function]}
           placeholder="Camping Trip"
-          required={undefined}
+          required={true}
           tabIndex={undefined}
           type="text"
           value={undefined}
@@ -60,25 +60,21 @@ exports[`Home renders correctly 1`] = `
         Add person
       </button>
     </div>
-    <a
-      href="/event"
+    <div
+      className="field"
     >
-      <div
-        className="field"
+      <button
+        className="ui button"
+        disabled={undefined}
+        onClick={[Function]}
+        required={undefined}
+        role="button"
+        tabIndex={undefined}
+        type="submit"
       >
-        <button
-          className="ui button"
-          disabled={undefined}
-          onClick={[Function]}
-          required={undefined}
-          role="button"
-          tabIndex={undefined}
-          type={undefined}
-        >
-          Create Event
-        </button>
-      </div>
-    </a>
+        Create Event
+      </button>
+    </div>
   </form>
 </div>
 `;

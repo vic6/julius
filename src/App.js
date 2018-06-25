@@ -32,11 +32,10 @@ class App extends Component {
   };
 
   handleAddExpense = (expense, resetForm, isFormValid) => {
-
     if (isFormValid()) {
       const split = expense.consumers.length;
       console.log(expense.consumers);
-      if(!expense.payer) return;
+      if (!expense.payer) return;
       if (split.length === 0) return;
       const participants = JSON.parse(localStorage.getItem('participants'));
       const { payer } = expense;
@@ -68,11 +67,11 @@ class App extends Component {
         }
         return expense;
       });
-      this.setState(prevState => ({ expenses: [...prevState.expenses, expense] }));
+      document.querySelectorAll('input[type=checkbox]').forEach( el => el.checked = false );
+      this.setState(prevState => ({ expenses: [expense, ...prevState.expenses] }));
       const updatedExpenses = [...this.state.expenses, expense];
       localStorage.setItem('expenses', JSON.stringify(updatedExpenses));
       resetForm();
-
     }
   };
 
@@ -89,12 +88,15 @@ class App extends Component {
   submitEvent = props => {
     const names = new Set();
     const hasDuplicates = this.state.participants.some(
-      person => names.size === names.add(person.name).size
+      person => names.size === names.add(person.name.trim()).size
     );
+    const emptyString = this.state.participants.filter(person => person.name.trim().length === 0);
     if (hasDuplicates) {
       this.setState({
         errors: 'Duplicate names or not allowed'
       });
+    } else if (emptyString.length > 0) {
+      this.setState({ errors: 'Please enter participants' });
     } else {
       this.setState({ errors: false });
       localStorage.removeItem('eventName');

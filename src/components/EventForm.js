@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Form, Label } from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
+import { Button, Form } from 'semantic-ui-react';
 import './EventForm.css';
 
 export default class EventForm extends Component {
@@ -66,9 +65,8 @@ export default class EventForm extends Component {
   // };
 
   render() {
-    console.log(this.props.errors)
     return (
-      <Form className="event-form" onSubmit={()=>this.props.submitEvent(this.props)}>
+      <Form className="event-form" onSubmit={() => this.props.submitEvent(this.props)}>
         <Form.Input
           onChange={this.props.eventNameChange}
           label="Event name"
@@ -77,16 +75,13 @@ export default class EventForm extends Component {
           value={this.props.eventName}
           required
         />
-        {this.props.errors && <p>{this.props.errors}</p>}
+        {this.props.errors && <p className='errors'>{this.props.errors}</p>}
         <Form.Field label="Participents" />
         <div className="event-form__participants">
           {!!this.props.renderForms && this.props.renderForms()}
           <Button onClick={this.props.addParticipant}>Add person</Button>
         </div>
-
-        {/* <Link to='/event' href="/event"> */}
-          <Form.Button type='submit'>Create Event</Form.Button>
-        {/* </Link> */}
+        <Form.Button type="submit">Create Event</Form.Button>
       </Form>
     );
   }
