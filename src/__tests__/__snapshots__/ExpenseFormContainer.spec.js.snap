@@ -1,0 +1,235 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ExpenseFormContainer renders correctly 1`] = `
+<div>
+  <form
+    action={undefined}
+    autoComplete="off"
+    className="ui form"
+    onSubmit={[Function]}
+  >
+    <div
+      className="required field"
+    >
+      <label
+        htmlFor={undefined}
+      >
+        Who Paid
+      </label>
+      <div
+        aria-busy={undefined}
+        aria-disabled={undefined}
+        aria-expanded={false}
+        aria-multiselectable={undefined}
+        className="ui selection dropdown"
+        content={undefined}
+        name="payer"
+        onBlur={[Function]}
+        onChange={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onMouseDown={[Function]}
+        required={true}
+        role="listbox"
+        tabIndex={0}
+        type={undefined}
+      >
+        <div
+          aria-live="polite"
+          className="default text"
+          role="alert"
+        >
+          Name
+        </div>
+        <i
+          aria-hidden="true"
+          className="dropdown icon"
+          onClick={[Function]}
+        />
+        <div
+          className="menu transition"
+        >
+          <div
+            aria-checked={false}
+            aria-disabled={undefined}
+            aria-selected={true}
+            className="selected item"
+            onClick={[Function]}
+            role="option"
+            style={
+              Object {
+                "pointerEvents": "all",
+              }
+            }
+          >
+            <span
+              className="text"
+            >
+              chef
+            </span>
+          </div>
+          <div
+            aria-checked={false}
+            aria-disabled={undefined}
+            aria-selected={false}
+            className="item"
+            onClick={[Function]}
+            role="option"
+            style={
+              Object {
+                "pointerEvents": "all",
+              }
+            }
+          >
+            <span
+              className="text"
+            >
+              bob
+            </span>
+          </div>
+          <div
+            aria-checked={false}
+            aria-disabled={undefined}
+            aria-selected={false}
+            className="item"
+            onClick={[Function]}
+            role="option"
+            style={
+              Object {
+                "pointerEvents": "all",
+              }
+            }
+          >
+            <span
+              className="text"
+            >
+              stan
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="required field"
+    >
+      <label
+        htmlFor={undefined}
+      >
+        Item name
+      </label>
+      <div
+        className="ui input"
+        content={undefined}
+      >
+        <input
+          disabled={undefined}
+          name="expenseName"
+          onChange={[Function]}
+          placeholder="flashlight"
+          required={true}
+          tabIndex={undefined}
+          type="text"
+          value=""
+        />
+      </div>
+    </div>
+    <div
+      className="required field"
+    >
+      <label
+        htmlFor={undefined}
+      >
+        Amount
+      </label>
+      <div
+        className="ui input"
+        content={undefined}
+      >
+        <input
+          disabled={undefined}
+          name="amount"
+          onChange={[Function]}
+          required={true}
+          tabIndex={undefined}
+          type="text"
+          value=""
+        />
+      </div>
+    </div>
+    <div
+      className="field"
+      name="consumers"
+    >
+      <label>
+        Split Between
+      </label>
+    </div>
+    <div
+      className="field"
+    >
+      <label>
+        <input
+          content={undefined}
+          disabled={undefined}
+          onChange={[Function]}
+          required={undefined}
+          type="checkbox"
+          value="chef"
+        />
+         
+        chef
+      </label>
+    </div>
+    <div
+      className="field"
+    >
+      <label>
+        <input
+          content={undefined}
+          disabled={undefined}
+          onChange={[Function]}
+          required={undefined}
+          type="checkbox"
+          value="bob"
+        />
+         
+        bob
+      </label>
+    </div>
+    <div
+      className="field"
+    >
+      <label>
+        <input
+          content={undefined}
+          disabled={undefined}
+          onChange={[Function]}
+          required={undefined}
+          type="checkbox"
+          value="stan"
+        />
+         
+        stan
+      </label>
+    </div>
+    <button
+      className="ui primary button"
+      disabled={undefined}
+      onClick={[Function]}
+      role="button"
+      tabIndex={undefined}
+    >
+      Enter Item
+    </button>
+    <button
+      className="ui secondary button"
+      disabled={undefined}
+      onClick={[Function]}
+      role="button"
+      tabIndex={undefined}
+    >
+      Back
+    </button>
+  </form>
+</div>
+`;
