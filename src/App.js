@@ -4,7 +4,7 @@ import { Form, Button, Container } from 'semantic-ui-react';
 import Home from './components/Home';
 import Navbar from './components/Navbar';
 import Event from './components/Event';
-import Expense from './components/Expense';
+import ExpenseFormContainer from './components/ExpenseFormContainer';
 import './App.css';
 
 class App extends Component {
@@ -173,7 +173,7 @@ class App extends Component {
                 />
                 <Route
                   path="/expense/new"
-                  render={props => <Expense handleAddExpense={this.handleAddExpense} {...props} />}
+                  render={props => <ExpenseFormContainer handleAddExpense={this.handleAddExpense} {...props} />}
                 />
                 <Redirect to="/" />
               </Switch>
