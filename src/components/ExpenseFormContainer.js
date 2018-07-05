@@ -19,9 +19,9 @@ export default class ExpenseFormContainer extends Component {
     });
   };
 
-  goBackExpenseForm = (history) => {
-    history.push('/event')
-  }
+  goBackExpenseForm = history => {
+    history.push('/event');
+  };
 
   handleAmountChange = event => {
     const amount = event.target.value;
@@ -91,7 +91,10 @@ export default class ExpenseFormContainer extends Component {
 
   render() {
     const participants = JSON.parse(localStorage.getItem('participants'));
-    const options = participants.map(person => ({ text: person.name, value: person.name }));
+    const options = participants.map(person => ({
+      text: person.name,
+      value: person.name
+    }));
     const { expenseName, amount, payer, consumers, errors, success } = this.state;
     return (
       <ExpenseForm

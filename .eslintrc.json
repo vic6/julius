@@ -8,9 +8,6 @@
     "prettier"
   ],
   "parser": "babel-eslint",
-  "rules": {
-    "strict": 0
-  },
   "env": {
     "es6": true,
     "browser": true,
@@ -18,6 +15,7 @@
     "jest": true
   },
   "rules": {
+    "strict": 0,
     "react/prop-types": 0,
     "react/jsx-filename-extension": [1, {
       "extensions": [".js", ".jsx"]

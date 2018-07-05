@@ -9,7 +9,7 @@ export default class Event extends Component {
     const participants = JSON.parse(localStorage.getItem('participants'));
 
     if (participants.length > 0) {
-      participants.map((person, i)=> {
+      participants.map((person, i) => {
         const profileNames = Object.keys(person.profile);
         if (profileNames.length > 0) {
           profileNames.map(name => {
@@ -35,7 +35,7 @@ export default class Event extends Component {
     const participants = JSON.parse(localStorage.getItem('participants'));
     const expenses = this.props.expenses.map(expense => {
       const { payer, amount, expenseName, consumers } = expense;
-      console.log(expense)
+      console.log(expense);
       const content = consumers.length === participants.length ? 'Everybody' : consumers;
       return (
         <List.Item key={expense.id}>
