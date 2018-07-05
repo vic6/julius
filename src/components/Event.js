@@ -9,13 +9,14 @@ export default class Event extends Component {
     const participants = JSON.parse(localStorage.getItem('participants'));
 
     if (participants.length > 0) {
-      participants.map(person => {
+      participants.map((person, i)=> {
         const profileNames = Object.keys(person.profile);
         if (profileNames.length > 0) {
           profileNames.map(name => {
             if (person.profile[name] > 0) {
               debtorsList.push(
                 <List.Item
+                  key={i}
                   icon="money"
                   content={`${name} owes ${person.name} $${round2Fixed(person.profile[name], 2)}`}
                 />
@@ -34,9 +35,10 @@ export default class Event extends Component {
     const participants = JSON.parse(localStorage.getItem('participants'));
     const expenses = this.props.expenses.map(expense => {
       const { payer, amount, expenseName, consumers } = expense;
+      console.log(expense)
       const content = consumers.length === participants.length ? 'Everybody' : consumers;
       return (
-        <List.Item>
+        <List.Item key={expense.id}>
           <List.Icon name="shop" size="large" verticalAlign="middle" />
           <List.Content>
             <List.Header>{`${payer.name} paid $${amount} for ${expenseName}`}</List.Header>

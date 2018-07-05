@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import { Button, Form, Select } from 'semantic-ui-react';
 
+const uuid = require('uuid');
+
 export default class ExpenseForm extends Component {
   render() {
     const { options } = this.props;
     const { expenseName, amount, payer, errors, success, consumers } = this.props;
     const expense = { expenseName, amount, payer, consumers };
+    expense.id = uuid();
     return (
       <div>
         {success && success}

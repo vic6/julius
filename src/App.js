@@ -118,7 +118,6 @@ class App extends Component {
   };
 
   renderForms = () => {
-    // key should use a uuid rather than index
     const userForms = this.state.participants.map((particpant, id) => (
       <div key={id}>
         <Form.Group>
@@ -173,7 +172,9 @@ class App extends Component {
                 />
                 <Route
                   path="/expense/new"
-                  render={props => <ExpenseFormContainer handleAddExpense={this.handleAddExpense} {...props} />}
+                  render={props => (
+                    <ExpenseFormContainer handleAddExpense={this.handleAddExpense} {...props} />
+                  )}
                 />
                 <Redirect to="/" />
               </Switch>
