@@ -8,6 +8,7 @@ export default class ExpenseFormContainer extends Component {
     amount: '',
     payer: {},
     consumers: [],
+    checkedBoxes: [],
     errors: false,
     success: null
   };
@@ -33,6 +34,9 @@ export default class ExpenseFormContainer extends Component {
   };
 
   resetExpenseForm = () => {
+    this.state.checkedBoxes.forEach(box => {
+      box.checked = false; // eslint-disable-line no-param-reassign
+    });
     this.setState({
       payer: '',
       expenseName: '',
@@ -48,14 +52,16 @@ export default class ExpenseFormContainer extends Component {
     this.setState({ payer });
   };
 
-  toggleCheckbox = particpant => {
+  toggleCheckbox = (particpant, event) => {
     if (this.state.consumers.includes(particpant.name)) {
       this.setState({
-        consumers: this.state.consumers.filter(person => person !== particpant.name)
+        consumers: this.state.consumers.filter(person => person !== particpant.name),
+        checkedBoxes: this.state.checkedBoxes.filter(box => box !== event.target)
       });
     } else {
       this.setState({
-        consumers: [...this.state.consumers, particpant.name]
+        consumers: [...this.state.consumers, particpant.name],
+        checkedBoxes: [...this.state.checkedBoxes, event.target]
       });
     }
   };

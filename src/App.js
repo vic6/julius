@@ -65,8 +65,6 @@ class App extends Component {
         }
         return expense;
       });
-
-      document.querySelectorAll('input[type=checkbox]').forEach(el => (el.checked = false));
       this.setState(prevState => ({ expenses: [expense, ...prevState.expenses] }));
       const updatedExpenses = [...this.state.expenses, expense];
       localStorage.setItem('expenses', JSON.stringify(updatedExpenses));
@@ -119,7 +117,7 @@ class App extends Component {
 
   renderForms = () => {
     const userForms = this.state.participants.map((particpant, id) => (
-      <div key={id}>
+      <div key={id}>  
         <Form.Group>
           <Form.Input
             placeholder="Persons name"
