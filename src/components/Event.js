@@ -3,20 +3,22 @@ import { Button, Header, List } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import round2Fixed from '../utils/index';
 
+const uuid = require('uuid');
+
 export default class Event extends Component {
   getUserProfiles = () => {
     const debtorsList = [];
     const participants = JSON.parse(localStorage.getItem('participants'));
 
     if (participants.length > 0) {
-      participants.map((person, i) => {
+      participants.map((person) => {
         const profileNames = Object.keys(person.profile);
         if (profileNames.length > 0) {
           profileNames.map(name => {
             if (person.profile[name] > 0) {
               debtorsList.push(
                 <List.Item
-                  key={i}
+                  key={uuid()}
                   icon="money"
                   content={`${name} owes ${person.name} $${round2Fixed(person.profile[name], 2)}`}
                 />
@@ -35,7 +37,6 @@ export default class Event extends Component {
     const participants = JSON.parse(localStorage.getItem('participants'));
     const expenses = this.props.expenses.map(expense => {
       const { payer, amount, expenseName, consumers } = expense;
-      console.log(expense);
       const content = consumers.length === participants.length ? 'Everybody' : consumers;
       return (
         <List.Item key={expense.id}>

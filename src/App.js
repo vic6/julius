@@ -7,10 +7,12 @@ import Event from './components/Event';
 import ExpenseFormContainer from './components/ExpenseFormContainer';
 import './App.css';
 
+const uuid = require('uuid');
+
 class App extends Component {
   state = {
     eventName: '',
-    participants: [{ name: '', profile: {} }, { name: '', profile: {} }],
+    participants: [{ name: '', profile: {}, id: uuid() }, { name: '', profile: {}, id: uuid() }],
     expenses: [],
     errors: false
   };
@@ -26,7 +28,7 @@ class App extends Component {
 
   addParticipant = () => {
     this.setState(prevState => ({
-      participants: [...prevState.participants, { name: '', profile: {} }]
+      participants: [...prevState.participants, { name: '', profile: {}, id: uuid() }]
     }));
   };
 
@@ -72,9 +74,9 @@ class App extends Component {
     }
   };
 
-  removeParticipant = formKey => {
+  removeParticipant = formId => {
     this.setState({
-      participants: this.state.participants.filter((form, formId) => formId !== formKey)
+      participants: this.state.participants.filter(form => form.id !== formId)
     });
   };
 
@@ -108,24 +110,24 @@ class App extends Component {
   };
 
   handleChange = (event, id) => {
-    const newParticipants = this.state.participants.map((person, formId) => {
-      if (id !== formId) return person;
+    const newParticipants = this.state.participants.map(person => {
+      if (id !== person.id) return person;
       return { ...person, name: event.target.value };
     });
     this.setState({ participants: newParticipants });
   };
 
   renderForms = () => {
-    const userForms = this.state.participants.map((particpant, id) => (
-      <div key={id}>  
+    const userForms = this.state.participants.map(particpant => (
+      <div key={particpant.id}>
         <Form.Group>
           <Form.Input
             placeholder="Persons name"
             type="text"
             value={particpant.name}
-            onChange={event => this.handleChange(event, id)}
+            onChange={event => this.handleChange(event, particpant.id)}
           />
-          <Button onClick={() => this.removeParticipant(id)}>Remove</Button>
+          <Button onClick={() => this.removeParticipant(particpant.id)}>Remove</Button>
         </Form.Group>
       </div>
     ));
