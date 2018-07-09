@@ -7,7 +7,6 @@ export default class Home extends Component {
     return (
       <div>
         <Header as="h1">
-
           Welcome to Julius
           <Header.Subheader>Create a new event to begin</Header.Subheader>
         </Header>

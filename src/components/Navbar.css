@@ -19,14 +19,10 @@ a {
   color: white;
 }
 
-
-
 .navbar__logo {
   font-size: 5em;
 }
-/* .navbar__content {
-  align-items: center;
-  display: flex;
-  justify-content: space-between;
-  padding: 0px 0px;
-} */
+
+.logo {
+  border-radius: 20px;
+}
