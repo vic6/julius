@@ -44,7 +44,7 @@ exports[`Home renders correctly 1`] = `
       className="field"
     >
       <label>
-        Participents
+        Participants
       </label>
     </div>
     <div
